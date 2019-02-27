@@ -11,6 +11,7 @@ class Calendar extends StatefulWidget {
   final ValueChanged<DateTime> onDateSelected;
   final ValueChanged<Tuple2<DateTime, DateTime>> onSelectedRangeChange;
   final bool isExpandable;
+  final bool isExpanded;
   final DayBuilder dayBuilder;
   final bool showChevronsToChangeRange;
   final bool showTodayAction;
@@ -21,6 +22,7 @@ class Calendar extends StatefulWidget {
       {this.onDateSelected,
       this.onSelectedRangeChange,
       this.isExpandable: false,
+      this.isExpanded: false,
       this.dayBuilder,
       this.showTodayAction: true,
       this.showChevronsToChangeRange: true,
@@ -37,7 +39,7 @@ class _CalendarState extends State<Calendar> {
   Iterable<DateTime> selectedWeeksDays;
   DateTime _selectedDate = new DateTime.now();
   String currentMonth;
-  bool isExpanded = false;
+  bool isExpanded = widget.isExpanded;
   String displayMonth;
   DateTime get selectedDate => _selectedDate;
 
@@ -181,23 +183,12 @@ class _CalendarState extends State<Calendar> {
 
   TextStyle configureDateStyle(monthStarted, monthEnded) {
     TextStyle dateStyles;
-    final TextStyle body1Style = Theme.of(context).textTheme.body1;
-
     if (isExpanded) {
-      final TextStyle body1StyleDisabled = body1Style.copyWith(
-        color: Color.fromARGB(
-          100, 
-          body1Style.color.red, 
-          body1Style.color.green, 
-          body1Style.color.blue,
-        )
-      );
-
       dateStyles = monthStarted && !monthEnded
-          ? body1Style
-          : body1StyleDisabled;
+          ? new TextStyle(color: Colors.black)
+          : new TextStyle(color: Colors.black38);
     } else {
-      dateStyles = body1Style;
+      dateStyles = new TextStyle(color: Colors.black);
     }
     return dateStyles;
   }
